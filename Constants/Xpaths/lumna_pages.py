@@ -1,0 +1,5 @@
+lnk_signIn = '(//a[contains(text(),"Sign In")])[1]'
+txt_box_usrname='//input[@name="login[username]"]'
+txt_box_password='//input[@name="login[password]"]'
+btn_login='//button[@class="action login primary"]'
+wc_link='//span[@class="logged-in"]'
