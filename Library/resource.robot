@@ -32,7 +32,7 @@ Read CSV Data
     Log To Console    Password: ${password}
     [Return]    ${username}    ${password}
 
-As an Admin if I login to the page
+As an User if I login to the page
     Click Link    ${lnk_signIn}
     Input Text    ${txt_box_usrname}    chiranthchandrashekar123@gmail.com
     Input Text    ${txt_box_password}    Top!00C123
@@ -45,9 +45,9 @@ I should land on ${page}
     IF    ${page} == "home page of luman"
         ${validation_link}=    Set Variable    ${home_page_of_luman}
         Log To Console    ${validation_link}
-    ELSE IF    ${page} == "Women page of luman"
+    ELSE
         Log To Console    ${page}
-        ${validation_link}=    Set Variable    ${women_page_of_luman}
+        ${validation_link}=    Replace String    ${selection_page}    <selection>    ${page}
         Log To Console    ${validation_link}
     END
     Wait Until Element Is Visible    ${validation_link}
@@ -58,5 +58,45 @@ I should land on ${page}
 Navigate to ${menu_option}
     ${main_menu_xpath}=    Replace String    ${menu_xpath}    <menu_option>    ${menu_option}
     Wait Until Element Is Visible    ${main_menu_xpath}
+    Mouse Over    ${main_menu_xpath}
+
+Cliked on ${menu_option}
+    ${main_menu_xpath}=    Replace String    ${menu_xpath}    <menu_option>    ${menu_option}
+    Wait Until Element Is Visible    ${main_menu_xpath}
     Click Element    ${main_menu_xpath}
-    Wait Until Element Is Visible    ${women_page_of_luman}
+    ${validation_link}=    Replace String    ${selection_page}    <selection>    ${menu_option}
+    Wait Until Element Is Visible    ${validation_link}
+
+
+As an User I want to Buy ${item}
+    ${chose_item_list}=    Replace String    ${item_list}    <item>    ${item}
+    Click Link    ${chose_item_list}
+    ${chose_item_heading}=    Replace String    ${item_headder}    <item>    ${item}
+    Wait Until Element Is Visible    ${chose_item_heading}
+
+User Choses product size to be ${size}
+    ${chose_item_size}=    Replace String    ${item_size}    <item>    ${size}
+    Click Element    ${chose_item_size}
+
+
+${size} size of product has to be selected
+    ${chose_item_size_selected}=    Replace String    ${item_size_selected}    <item>    ${size}
+    Wait Until Element Is Visible    ${chose_item_size_selected}
+
+User Choses product color to be ${color}
+    ${chose_item_color}=    Replace String    ${item_color}    <item>    ${color}
+    Click Element    ${chose_item_color}
+ 
+${color} color of product has to be selected
+   ${chose_item_color_selected}=    Replace String    ${item_color_selected}    <item>    ${color}
+    Wait Until Element Is Visible    ${chose_item_color_selected}
+  
+User Add the ${item} to cart
+    Click Button    ${add_to_cart}
+    Wait Until Element Is Visible    ${success_msg}
+  
+The ${item} is shown in the cart
+    ${item_without_quotes}    Evaluate    ${item}.strip('"')
+    Log To Console    item_without_quotes: ${item_without_quotes}
+    ${msg}=    Get Text    ${success_msg}
+    Should Contain    ${msg}    ${item_without_quotes}
